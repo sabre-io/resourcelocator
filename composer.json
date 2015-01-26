@@ -27,12 +27,8 @@
     },
     "autoload": {
         "psr-4" : {
-            "Sabre\\ResourceLocator\\" : "lib/",
-            "Sabre\\Uri\\" : "../Uri/lib/"
-        },
-        "files" : [
-            "../Uri/lib/functions.php"
-        ]
+            "Sabre\\ResourceLocator\\" : "lib/"
+        }
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "*",
