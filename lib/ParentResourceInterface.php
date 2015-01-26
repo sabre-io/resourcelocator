@@ -1,5 +1,7 @@
 <?php
 
+namespace Sabre\ResourceLocator;
+
 /**
  * The 'ParentResource' is a Resource that can return a child-node.
  *

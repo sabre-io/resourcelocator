@@ -50,7 +50,7 @@ class Locator implements LocatorInterface {
      * @param ResourceInterface $resource
      * @return void
      */
-    function mount($path, ResourceInterface $resource) {
+    function mount($path, $resource) {
 
         if (!$resource instanceof ResourceInterface && !is_callable($resource)) {
             throw new InvalidArgumentException('A mounted resource must be either ResourceInterface or a callback');
@@ -58,7 +58,7 @@ class Locator implements LocatorInterface {
         $this->mounts[$path] = $resource;
 
         list($parent, $child) = Uri\split($path);
-        $this->link($parent, 'child', $child);
+        $this->link($parent, 'child', $path);
 
     }
 
@@ -93,9 +93,12 @@ class Locator implements LocatorInterface {
     function get($path) {
 
         if (isset($this->mounts[$path])) {
+            // We have a mount on that path.
             if ($this->mounts[$path] instanceof ResourceInterface) {
                 return $this->mounts[$path];
             } else {
+                // The mount was specified as a callback, so we're running it
+                // now, and saving the result.
                 $this->mounts[$path] = $this->mounts[$path]();
                 return $this->mounts[$path];
             }
@@ -107,19 +110,24 @@ class Locator implements LocatorInterface {
 
         if (!$parentName) {
             // We're at the root and can't go up further in the tree.
-            return null;
+            throw new NotFoundException('Resource not found');
         }
 
         $parent = $this->get($parentName);
         if (is_null($parent)) {
             // The parent did not exist.
-            return null;
+            throw new NotFoundException('Resource not found');
         }
         if (!$parent instanceof ParentResourceInterface) {
             // The parent was not a 'ParentResource'.
-            return null;
+            throw new NotFoundException('Resource not found');
         }
-        return $parent->getChild($name);
+        $result = $parent->getChild($baseName);
+        if (is_null($result)) {
+            throw new NotFoundException('Resource not found');
+        } else {
+            return $result;
+        }
 
     }
 
@@ -166,7 +174,7 @@ class Locator implements LocatorInterface {
                 $rLinks[$rel] = [];
             }
             foreach($links as $link) {
-                if(parse_url($link, PHP_URL_HOST)) {
+                if(parse_url($link, PHP_URL_SCHEME)) {
                     // Absolute
                     $rLinks[$rel][] = $link;
                 } elseif ($link[0] === '/') {
