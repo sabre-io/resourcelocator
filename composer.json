@@ -1,12 +1,13 @@
 {
-    "name": "sabre/resource-locator",
-    "description": "The resource-locator is a simple hierachical router-like system.",
+    "name": "sabre/resourcelocator",
+    "description": "The resourcelocator is a simple hierachical router-like system for hypermedia applications.",
     "keywords": [
+        "hypermedia",
+        "resourcelocator",
         "router",
-        "resource-locator",
         "tree"
     ],
-    "homepage": "http://sabre.io/resource-locator/",
+    "homepage": "http://sabre.io/resourcelocator/",
     "license": "BSD-3-Clause",
     "require": {
         "php": ">=5.4.7",
@@ -22,7 +23,7 @@
     ],
     "support": {
         "forum": "https://groups.google.com/group/sabredav-discuss",
-        "source": "https://github.com/fruux/sabre-resource-locator"
+        "source": "https://github.com/fruux/sabre-resourcelocator"
     },
     "autoload": {
         "psr-4" : {
