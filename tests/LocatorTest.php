@@ -29,7 +29,7 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
      * @depends testGetNotFound
      */
     function testMountResource() {
-        
+
         $locator = new Locator();
         $locator->mount('foo', new NullResource());
         $this->assertInstanceOf(
@@ -59,7 +59,7 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
      * @depends testGetNotFound
      */
     function testMountCallBack() {
-        
+
         $locator = new Locator();
         $locator->mount('foo', function() { return new NullResource(); });
         $this->assertInstanceOf(
@@ -92,7 +92,7 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
      * @depends testMountResource
      */
     function testLink() {
-    
+
         $locator = new Locator();
         $locator->mount('foo', new NullResource());
         $locator->link('foo', 'homepage', 'http://evertpot.com/');
@@ -114,11 +114,11 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @depends testMountResource
-     */ 
+     */
     function testGetFromParentResource() {
 
         $parent = $this->getMock('Sabre\ResourceLocator\ParentResourceInterface');
-        $parent->expects()->method('getChild')->once()->willReturn(function() { return new NullResource(); });
+        $parent->expects($this->once())->method('getChild')->willReturn(function() { return new NullResource(); });
 
         $locator = new Locator();
         $locator->mount('parent', $parent);
