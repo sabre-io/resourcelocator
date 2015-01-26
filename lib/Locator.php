@@ -29,6 +29,15 @@ class Locator implements LocatorInterface {
     protected $links = [];
 
     /**
+     * Creates and initializes the Locator
+     */
+    function __construct() {
+
+        $this->mounts[''] = new NullResource();
+
+    }
+
+    /**
      * Mounts a resource on a specific path.
      *
      * The resource will be returned when requesting the specific path, or when
@@ -48,8 +57,8 @@ class Locator implements LocatorInterface {
         }
         $this->mounts[$path] = $resource;
 
-        list($parent, $child) = Uri::split($path);
-        $this->addLink($parent, 'child', $child);
+        list($parent, $child) = Uri\split($path);
+        $this->link($parent, 'child', $child);
 
     }
 
@@ -94,13 +103,20 @@ class Locator implements LocatorInterface {
 
         // We don't have a mount, we need to reverse-traverse the tree to find
         // the original node.
-        list($parentName, $baseName) = Uri::split($path);
+        list($parentName, $baseName) = Uri\split($path);
+
+        if (!$parentName) {
+            // We're at the root and can't go up further in the tree.
+            return null;
+        }
 
         $parent = $this->get($parentName);
         if (is_null($parent)) {
+            // The parent did not exist.
             return null;
         }
         if (!$parent instanceof ParentResourceInterface) {
+            // The parent was not a 'ParentResource'.
             return null;
         }
         return $parent->getChild($name);
@@ -130,17 +146,44 @@ class Locator implements LocatorInterface {
      *
      * URIs may be absolute or relative.
      *
-     * If the URI is relative and starts with a slash, the 'root' of the
-     * resource locator is used to determine the real path. If the URI is
-     * relative, but does not start with a slash, the location of the 'parent
-     * node' is taken as the base path.
-     *
      * @param mixed $path
      * @return array
      */
     function getLinks($path) {
 
-        return $this->get($path)->getLinks();
+        $rLinks = [];
+
+        if ($path) {
+            // A non-empty path means that a parent exists
+            $rLinks['parent'] = [Uri\split($path)[0]];
+        }
+
+        // Links coming from the node might be relative to the node, this
+        // function makes them relative to the root of the locator.
+        foreach($this->get($path)->getLinks() as $rel=>$links) {
+
+            if (!isset($rLinks[$rel])) {
+                $rLinks[$rel] = [];
+            }
+            foreach($links as $link) {
+                if(parse_url($link, PHP_URL_HOST)) {
+                    // Absolute
+                    $rLinks[$rel][] = $link;
+                } elseif ($link[0] === '/') {
+                    // Relative to the root of the locator.
+                    $rLinks[$rel][] = substr($link,1);
+                } else {
+                    // Relative to the current node.
+                    $rLinks[$rel][] = $path . '/' . $link;
+                }
+            }
+
+        }
+
+        return array_merge_recursive(
+            $rLinks,
+            isset($this->links[$path])?$this->links[$path]:[]
+        );
 
     }
 
