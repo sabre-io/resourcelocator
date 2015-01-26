@@ -85,10 +85,12 @@ class Locator implements LocatorInterface {
     /**
      * Returns a resource for a specific path.
      *
-     * This method will return null if the resource did not exists.
+     * This method will throw a NotFoundException if the resource could not be
+     * found.
      *
      * @param string $path
-     * @return null|ResourceInterface
+     * @throws NotFoundException
+     * @return ResourceInterface
      */
     function get($path) {
 

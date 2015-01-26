@@ -14,10 +14,12 @@ interface LocatorInterface {
     /**
      * Returns a resource for a specific path.
      *
-     * This method will return null if the resource did not exists.
+     * This method will throw a NotFoundException if the resource could not be
+     * found.
      *
      * @param string $path
-     * @return null|ResourceInterface
+     * @throws NotFoundException
+     * @return ResourceInterface
      */
     function get($path);
 
@@ -39,12 +41,7 @@ interface LocatorInterface {
      * of relation, and whose values is another array with URIs.
      *
      * URIs may be absolute or relative.
-     *
-     * If the URI is relative and starts with a slash, the 'root' of the
-     * resource locator is used to determine the real path. If the URI is
-     * relative, but does not start with a slash, the location of the 'parent
-     * node' is taken as the base path.
-     *
+    *
      * @param mixed $path
      * @return array
      */
