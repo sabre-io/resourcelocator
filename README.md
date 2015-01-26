@@ -1,17 +1,8 @@
 sabre/resource-locator
 ======================
 
-This repository provides a 'resource locator'. The function of the
-resource-locator is not unlike a 'router' in web framework terms.
-
-This resource locator forces a strict tree-based hierarchy.
-
-The core functionality of this package is to 'take' some kind of path,
-such as '/article/12' and map this to a class representing this resource.
-
-Unlike typical routers, this resource locator only facilitates fetching a
-class living at a particular location, but does not make any assumption about
-what processes a particular request, and send a response.
+The previous package description was shit. This is a placeholder until there's
+something better.
 
 
 Installation
@@ -19,7 +10,7 @@ Installation
 
 Make sure you have [composer][1] installed, and then run:
 
-    composer require sabre/resource-locator
+    composer require sabre/resourcelocator
 
 
 Build status
@@ -27,7 +18,7 @@ Build status
 
 | branch | status |
 | ------ | ------ |
-| master | [![Build Status](https://travis-ci.org/fruux/sabre-resource-locator.png?branch=master)](https://travis-ci.org/fruux/sabre-resource-locator) |
+| master | [![Build Status](https://travis-ci.org/fruux/sabre-resourcelocator.png?branch=master)](https://travis-ci.org/fruux/sabre-resourcelocator) |
 
 
 Questions?
@@ -45,5 +36,5 @@ services or enterprise support.
 
 [1]: http://getcomposer.org/
 [2]: http://groups.google.com/group/sabredav-discuss
-[3]: https://github.com/fruux/sabre-resource-locator/issues/
+[3]: https://github.com/fruux/sabre-resourcelocator/issues/
 [4]: https://fruux.com/
