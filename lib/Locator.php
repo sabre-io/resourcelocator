@@ -58,7 +58,7 @@ class Locator implements LocatorInterface {
         $this->mounts[$path] = $resource;
 
         list($parent, $child) = Uri\split($path);
-        $this->link($parent, 'child', $path);
+        $this->link($parent, 'item', $path);
 
     }
 
@@ -120,11 +120,11 @@ class Locator implements LocatorInterface {
             // The parent did not exist.
             throw new NotFoundException('Resource not found');
         }
-        if (!$parent instanceof ParentResourceInterface) {
+        if (!$parent instanceof CollectionInterface) {
             // The parent was not a 'ParentResource'.
             throw new NotFoundException('Resource not found');
         }
-        $result = $parent->getChild($baseName);
+        $result = $parent->getItem($baseName);
         if (is_null($result)) {
             throw new NotFoundException('Resource not found');
         } else {
@@ -165,7 +165,7 @@ class Locator implements LocatorInterface {
 
         if ($path) {
             // A non-empty path means that a parent exists
-            $rLinks['parent'] = [Uri\split($path)[0]];
+            $rLinks['collection'] = [Uri\split($path)[0]];
         }
 
         // Links coming from the node might be relative to the node, this

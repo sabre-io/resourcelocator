@@ -24,20 +24,20 @@ $locator = new Locator();
  *
  * In this case we're representing users on a system.
  */
-class Principals implements ParentResourceInterface {
+class Principals implements CollectionInterface {
 
     /**
      * A list of users... Normally this would come from a DB.
      */
-    public $children = ['admin','user1','user2','user3','user4','user5','user6','user7','user8','evert'];
+    public $items = ['admin','user1','user2','user3','user4','user5','user6','user7','user8','evert'];
 
     /**
      * The getChild method is responsible for returning a Resource class for a
      * child-node.
      */
-    function getChild($name) {
+    function getItem($name) {
 
-        if (in_array($name, $this->children)) {
+        if (in_array($name, $this->items)) {
             // A NullResource is kind of like a dummy resource. It does
             // nothing.
             return new NullResource();
@@ -57,7 +57,7 @@ class Principals implements ParentResourceInterface {
      */
     function getLinks() {
 
-        return ['child' => $this->children];
+        return ['item' => $this->items];
 
     }
 
