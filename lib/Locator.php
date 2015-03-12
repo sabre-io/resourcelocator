@@ -112,21 +112,21 @@ class Locator implements LocatorInterface {
 
         if (!$parentName) {
             // We're at the root and can't go up further in the tree.
-            throw new NotFoundException('Resource not found');
+            throw new NotFoundException('Resource "' . $path . '" not found');
         }
 
         $parent = $this->get($parentName);
         if (is_null($parent)) {
             // The parent did not exist.
-            throw new NotFoundException('Resource not found');
+            throw new NotFoundException('Resource "' . $path . '" not found');
         }
         if (!$parent instanceof CollectionInterface) {
             // The parent was not a 'ParentResource'.
-            throw new NotFoundException('Resource not found');
+            throw new NotFoundException('Resource "' . $path . '" not found');
         }
         $result = $parent->getItem($baseName);
         if (is_null($result)) {
-            throw new NotFoundException('Resource not found');
+            throw new NotFoundException('Resource "' . $path . '" not found');
         } else {
             return $result;
         }
