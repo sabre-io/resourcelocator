@@ -53,7 +53,7 @@ class Locator implements LocatorInterface {
     function mount($path, $resource) {
 
         if (!$resource instanceof ResourceInterface && !is_callable($resource)) {
-            throw new InvalidArgumentException('A mounted resource must be either ResourceInterface or a callback');
+            throw new InvalidArgumentException('A mounted resource must be either ResourceInterface or a callback.');
         }
         $this->mounts[$path] = $resource;
 

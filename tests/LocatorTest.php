@@ -117,8 +117,8 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
      */
     function testGetFromParentResource() {
 
-        $parent = $this->getMock('Sabre\ResourceLocator\ParentResourceInterface');
-        $parent->expects($this->once())->method('getChild')->willReturn(function() { return new NullResource(); });
+        $parent = $this->getMock('Sabre\ResourceLocator\CollectionInterface');
+        $parent->expects($this->once())->method('getItem')->willReturn(function() { return new NullResource(); });
 
         $locator = new Locator();
         $locator->mount('parent', $parent);
