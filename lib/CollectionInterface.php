@@ -4,7 +4,7 @@ namespace Sabre\ResourceLocator;
 
 /**
  * The 'CollectionInterface' is a type of Resource that can contains members.
- * The members can be fetched using the getItem() method. 
+ * The members can be fetched using the getItem() method.
  *
  * @copyright Copyright (C) 2007-2015 fruux GmbH. (https://fruux.com/)
  * @author Evert Pot (http://evertpot.com/)
