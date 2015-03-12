@@ -11,7 +11,7 @@
     "license": "BSD-3-Clause",
     "require": {
         "php": ">=5.4.7",
-        "sabre/uri" : "~0.0.1"
+        "sabre/uri" : "~1.0.0"
     },
     "authors": [
         {
