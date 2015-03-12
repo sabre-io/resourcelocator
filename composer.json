@@ -10,7 +10,7 @@
     "homepage": "http://sabre.io/resourcelocator/",
     "license": "BSD-3-Clause",
     "require": {
-        "php": ">=5.4.7",
+        "php": ">=5.5.0",
         "sabre/uri" : "~1.0.0"
     },
     "authors": [
