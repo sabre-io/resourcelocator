@@ -38,17 +38,13 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
         );
         $this->assertEquals(
             [
-                'item' => [
-                    'foo',
-                ]
+                new Link('foo','item')
             ],
             $locator->getLinks('')
         );
         $this->assertEquals(
             [
-                'collection' => [
-                    '',
-                ]
+                new Link('','collection')
             ],
             $locator->getLinks('foo')
         );
@@ -68,9 +64,7 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
         );
         $this->assertEquals(
             [
-                'item' => [
-                    'foo',
-                ]
+                new Link('foo','item')
             ],
             $locator->getLinks('')
         );
@@ -95,17 +89,13 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
 
         $locator = new Locator();
         $locator->mount('foo', new NullResource());
-        $locator->link('foo', 'homepage', 'http://evertpot.com/');
-        $locator->link('foo', 'homepage', 'http://evertpot.com/');
+        $locator->link('foo', new Link('http://evertpot.com/', 'homepage'));
+        $locator->link('foo', new Link('http://evertpot.com/', 'homepage'));
         $this->assertEquals(
             [
-                'collection' => [
-                    '',
-                ],
-                'homepage' => [
-                    'http://evertpot.com/',
-                    'http://evertpot.com/',
-                ]
+                new Link('','collection'),
+                new Link('http://evertpot.com/','homepage'),
+                new Link('http://evertpot.com/','homepage')
             ],
             $locator->getLinks('foo')
         );

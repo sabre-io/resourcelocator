@@ -58,7 +58,7 @@ class Locator implements LocatorInterface {
         $this->mounts[$path] = $resource;
 
         list($parent, $child) = Uri\split($path);
-        $this->link($parent, 'item', $path);
+        $this->link($parent, new Link($path, 'item'));
 
     }
 
@@ -66,18 +66,15 @@ class Locator implements LocatorInterface {
      * Adds a link into the tree.
      *
      * @param string $origin Where the link comes from.
-     * @param string $relation The type of relationship.
-     * @param string $destination Where we're linking to.
+     * @param LinkInterface $link
      * @return void
      */
-    function link($origin, $relation, $destination) {
+    function link($origin, LinkInterface $link) {
 
         if (!isset($this->links[$origin])) {
-            $this->links[$origin] = [$relation => [$destination]];
-        } elseif (!isset($this->links[$origin][$relation])) {
-            $this->links[$origin][$relation] = [$destination];
+            $this->links[$origin] = [$link];
         } else {
-            $this->links[$origin][$relation][] = $destination;
+            $this->links[$origin][] = $link;
         }
 
     }
@@ -156,8 +153,8 @@ class Locator implements LocatorInterface {
      *
      * URIs may be absolute or relative.
      *
-     * @param mixed $path
-     * @return array
+     * @param string $path
+     * @return LinkInterface[]
      */
     function getLinks($path) {
 
@@ -165,32 +162,27 @@ class Locator implements LocatorInterface {
 
         if ($path) {
             // A non-empty path means that a parent exists
-            $rLinks['collection'] = [Uri\split($path)[0]];
+            $rLinks[] = new Link(Uri\split($path)[0], 'collection');
         }
 
         // Links coming from the node might be relative to the node, this
         // function makes them relative to the root of the locator.
-        foreach($this->get($path)->getLinks() as $rel=>$links) {
+        foreach($this->get($path)->getLinks() as $link) {
 
-            if (!isset($rLinks[$rel])) {
-                $rLinks[$rel] = [];
-            }
-            foreach($links as $link) {
-                if(parse_url($link, PHP_URL_SCHEME)) {
-                    // Absolute
-                    $rLinks[$rel][] = $link;
-                } elseif ($link[0] === '/') {
-                    // Relative to the root of the locator.
-                    $rLinks[$rel][] = substr($link,1);
-                } else {
-                    // Relative to the current node.
-                    $rLinks[$rel][] = $path . '/' . $link;
-                }
+            if(parse_url($link->getHref(), PHP_URL_SCHEME)) {
+                // Absolute
+                $rLinks[] = $link;
+            } elseif ($link[0] === '/') {
+                // Relative to the root of the locator.
+                $rLinks[] = new Link(substr($link,1), $link->getRel(), $link->getAttributes());
+            } else {
+                // Relative to the current node.
+                $rLinks[] = new Link($path . '/' . $link, $link->getRel(), $link->getAttributes());
             }
 
         }
 
-        return array_merge_recursive(
+        return array_merge(
             $rLinks,
             isset($this->links[$path])?$this->links[$path]:[]
         );
