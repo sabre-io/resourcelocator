@@ -169,15 +169,16 @@ class Locator implements LocatorInterface {
         // function makes them relative to the root of the locator.
         foreach($this->get($path)->getLinks() as $link) {
 
-            if(parse_url($link->getHref(), PHP_URL_SCHEME)) {
+            $href = $link->getHref();
+            if(parse_url($href, PHP_URL_SCHEME)) {
                 // Absolute
                 $rLinks[] = $link;
-            } elseif ($link[0] === '/') {
+            } elseif ($href === '/') {
                 // Relative to the root of the locator.
-                $rLinks[] = new Link(substr($link,1), $link->getRel(), $link->getAttributes());
+                $rLinks[] = new Link(substr($href,1), $link->getRel(), $link->getAttributes());
             } else {
                 // Relative to the current node.
-                $rLinks[] = new Link($path . '/' . $link, $link->getRel(), $link->getAttributes());
+                $rLinks[] = new Link($path . '/' . $href, $link->getRel(), $link->getAttributes());
             }
 
         }

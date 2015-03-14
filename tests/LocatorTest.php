@@ -108,12 +108,46 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
     function testGetFromParentResource() {
 
         $parent = $this->getMock('Sabre\ResourceLocator\CollectionInterface');
-        $parent->expects($this->once())->method('getItem')->willReturn(function() { return new NullResource(); });
+        $parent->expects($this->once())
+            ->method('getItem')
+            ->willReturn( new NullResource() );
 
         $locator = new Locator();
         $locator->mount('parent', $parent);
 
-        $locator->get('parent/child');
+        $result = $locator->get('parent/child');
+        $this->assertInstanceOf(NullResource::class, $result);
+
+    }
+
+    /**
+     * @depends testMountResource
+     */
+    function testGetLinksViaResource() {
+
+        $resource = $this->getMock('Sabre\ResourceLocator\NullResource');
+        $resource
+            ->expects($this->once())
+            ->method('getLinks')
+            ->willReturn([
+                new Link('http://example.org','foo-bar'),
+                new Link('/','root'),
+                new Link('subnode','child')
+            ]);
+
+        $locator = new Locator();
+        $locator->mount('node', $resource);
+
+        $this->assertEquals(
+            [
+                new Link('', 'collection'),
+                new Link('http://example.org', 'foo-bar'),
+                new Link('', 'root'),
+                new Link('node/subnode', 'child'),
+            ],
+            $locator->getLinks('node')
+        );
+
 
     }
 
