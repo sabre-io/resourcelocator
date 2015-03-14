@@ -173,7 +173,7 @@ class Locator implements LocatorInterface {
             if(parse_url($href, PHP_URL_SCHEME)) {
                 // Absolute
                 $rLinks[] = $link;
-            } elseif ($href === '/') {
+            } elseif ($href[0] === '/') {
                 // Relative to the root of the locator.
                 $rLinks[] = new Link(substr($href,1), $link->getRel(), $link->getAttributes());
             } else {

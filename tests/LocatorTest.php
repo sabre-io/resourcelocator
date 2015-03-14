@@ -132,6 +132,7 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
             ->willReturn([
                 new Link('http://example.org','foo-bar'),
                 new Link('/','root'),
+                new Link('/sibling','sibling'),
                 new Link('subnode','child')
             ]);
 
@@ -143,6 +144,7 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
                 new Link('', 'collection'),
                 new Link('http://example.org', 'foo-bar'),
                 new Link('', 'root'),
+                new Link('sibling', 'sibling'),
                 new Link('node/subnode', 'child'),
             ],
             $locator->getLinks('node')
