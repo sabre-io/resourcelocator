@@ -19,7 +19,7 @@ Build status
 
 | branch | status |
 | ------ | ------ |
-| master | [![Build Status](https://travis-ci.org/fruux/sabre-resourcelocator.png?branch=master)](https://travis-ci.org/fruux/sabre-resourcelocator) |
+| master | [![Build Status](https://travis-ci.org/fruux/sabre-resourcelocator.svg?branch=master)](https://travis-ci.org/fruux/sabre-resourcelocator) |
 
 
 Questions?
