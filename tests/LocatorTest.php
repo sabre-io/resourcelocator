@@ -2,7 +2,7 @@
 
 namespace Sabre\ResourceLocator;
 
-class LocatorTest extends \PHPUnit_Framework_TestCase {
+class LocatorTest extends \PHPUnit\Framework\TestCase {
 
     function testConstruct() {
 
@@ -11,6 +11,14 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
             NullResource::class,
             $locator->get('')
         );
+
+    }
+
+    function testExists() {
+
+        $locator = new Locator();
+        $this->assertTrue($locator->exists(''));
+        $this->assertTrue($locator->exists(null));
 
     }
 
@@ -107,7 +115,8 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
      */
     function testGetFromParentResource() {
 
-        $parent = $this->getMock('Sabre\ResourceLocator\CollectionInterface');
+        $parent = $this->getMockBuilder('Sabre\ResourceLocator\CollectionInterface')
+            ->getMock();
         $parent->expects($this->once())
             ->method('getItem')
             ->willReturn( new NullResource() );
@@ -125,7 +134,8 @@ class LocatorTest extends \PHPUnit_Framework_TestCase {
      */
     function testGetLinksViaResource() {
 
-        $resource = $this->getMock('Sabre\ResourceLocator\NullResource');
+        $resource = $this->getMockBuilder('Sabre\ResourceLocator\NullResource')
+            ->getMock();
         $resource
             ->expects($this->once())
             ->method('getLinks')
