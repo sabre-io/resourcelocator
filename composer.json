@@ -10,8 +10,8 @@
     "homepage": "http://sabre.io/resourcelocator/",
     "license": "BSD-3-Clause",
     "require": {
-        "php": ">=5.5.0",
-        "sabre/uri" : "~1.0.0"
+        "php": "^7.1",
+        "sabre/uri" : "^2.1"
     },
     "authors": [
         {
@@ -31,8 +31,8 @@
         }
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "*",
-        "phpunit/phpunit" : "*"
+        "friendsofphp/php-cs-fixer": "2.16.*",
+        "phpunit/phpunit" : "^7"
     },
     "config" : {
         "bin-dir" : "bin/"

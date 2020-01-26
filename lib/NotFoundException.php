@@ -11,5 +11,6 @@ use Exception;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
-class NotFoundException extends Exception {
+class NotFoundException extends Exception
+{
 }

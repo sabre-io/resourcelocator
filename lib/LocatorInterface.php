@@ -9,8 +9,8 @@ namespace Sabre\ResourceLocator;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
-interface LocatorInterface {
-
+interface LocatorInterface
+{
     /**
      * Returns a resource for a specific path.
      *
@@ -18,18 +18,21 @@ interface LocatorInterface {
      * found.
      *
      * @param string $path
+     *
      * @throws NotFoundException
+     *
      * @return ResourceInterface
      */
-    function get($path);
+    public function get($path);
 
     /**
      * Returns whether a resource on a specific path exists.
      *
      * @param string $path
+     *
      * @return void
      */
-    function exists($path);
+    public function exists($path);
 
     /**
      * Returns links for a particular resource.
@@ -41,10 +44,10 @@ interface LocatorInterface {
      * of relation, and whose values is another array with URIs.
      *
      * URIs may be absolute or relative.
-    *
+     *
      * @param mixed $path
+     *
      * @return array
      */
-    function getLinks($path);
-
+    public function getLinks($path);
 }

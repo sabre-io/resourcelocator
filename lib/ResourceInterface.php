@@ -9,17 +9,16 @@ namespace Sabre\ResourceLocator;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
-interface ResourceInterface {
-
+interface ResourceInterface
+{
     /**
      * Returns links for this resource.
      *
      * While this is optional, adding this feature allows for automated
      * discovery of resources associated with this particular resource.
 
+     *
      * @return LinkInterface[]
      */
-    function getLinks();
-
+    public function getLinks();
 }
-

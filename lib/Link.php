@@ -9,10 +9,10 @@ namespace Sabre\ResourceLocator;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
-class Link implements LinkInterface {
-
+class Link implements LinkInterface
+{
     /**
-     * Target resource
+     * Target resource.
      *
      * @var string
      */
@@ -33,19 +33,18 @@ class Link implements LinkInterface {
     protected $attributes;
 
     /**
-     * Creates a new Link
+     * Creates a new Link.
      *
-     * @param string $href
+     * @param string          $href
      * @param string|string[] $rel
-     * @param array $attributes
+     *
      * @return void
      */
-    function __construct($href, $rel, array $attributes = []) {
-
+    public function __construct($href, $rel, array $attributes = [])
+    {
         $this->href = $href;
-        $this->rel = (array)$rel;
+        $this->rel = (array) $rel;
         $this->attributes = $attributes;
-
     }
 
     /**
@@ -55,10 +54,9 @@ class Link implements LinkInterface {
      *
      * @return string
      */
-    function getHref() {
-
+    public function getHref()
+    {
         return $this->href;
-
     }
 
     /**
@@ -82,10 +80,9 @@ class Link implements LinkInterface {
      *
      * @return string[]
      */
-    function getRel() {
-
+    public function getRel()
+    {
         return $this->rel;
-
     }
 
     /**
@@ -109,10 +106,8 @@ class Link implements LinkInterface {
      *
      * @return array
      */
-    function getAttributes() {
-
+    public function getAttributes()
+    {
         return $this->attributes;
-
     }
-
 }
