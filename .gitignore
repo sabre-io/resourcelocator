@@ -7,8 +7,14 @@ tests/cov/
 
 # Composer binaries
 bin/phpunit
-bin/phpcs
-bin/phpcbf
+bin/php-cs-fixer
+bin/phpstan
+bin/phpstan.phar
 
 # Vim
 .*.swp
+
+# IDEs
+/.idea
+
+.php_cs.cache
