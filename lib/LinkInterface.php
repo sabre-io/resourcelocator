@@ -9,8 +9,8 @@ namespace Sabre\ResourceLocator;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
-interface LinkInterface {
-
+interface LinkInterface
+{
     /**
      * Returns the target of the link.
      *
@@ -18,7 +18,7 @@ interface LinkInterface {
      *
      * @return string
      */
-    function getHref();
+    public function getHref();
 
     /**
      * Returns the relationship type(s) of the link.
@@ -41,7 +41,7 @@ interface LinkInterface {
      *
      * @return string[]
      */
-    function getRel();
+    public function getRel();
 
     /**
      * Returns a list of attributes that describe the target URI.
@@ -64,6 +64,5 @@ interface LinkInterface {
      *
      * @return array
      */
-    function getAttributes();
-
+    public function getAttributes();
 }

@@ -12,8 +12,8 @@ use Sabre\Uri;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
-class Locator implements LocatorInterface {
-
+class Locator implements LocatorInterface
+{
     /**
      * Mounted paths.
      *
@@ -29,12 +29,11 @@ class Locator implements LocatorInterface {
     protected $links = [];
 
     /**
-     * Creates and initializes the Locator
+     * Creates and initializes the Locator.
      */
-    function __construct() {
-
+    public function __construct()
+    {
         $this->mounts[''] = new NullResource();
-
     }
 
     /**
@@ -46,12 +45,13 @@ class Locator implements LocatorInterface {
      * The resource may either be immediately specfied or a callback may be
      * used to allow for lazy-loading.
      *
-     * @param string $path
+     * @param string            $path
      * @param ResourceInterface $resource
+     *
      * @return void
      */
-    function mount($path, $resource) {
-
+    public function mount($path, $resource)
+    {
         if (!$resource instanceof ResourceInterface && !is_callable($resource)) {
             throw new InvalidArgumentException('A mounted resource must be either ResourceInterface or a callback.');
         }
@@ -59,24 +59,22 @@ class Locator implements LocatorInterface {
 
         list($parent, $child) = Uri\split($path);
         $this->link($parent, new Link($path, 'item'));
-
     }
 
     /**
      * Adds a link into the tree.
      *
-     * @param string $origin Where the link comes from.
-     * @param LinkInterface $link
+     * @param string $origin where the link comes from
+     *
      * @return void
      */
-    function link($origin, LinkInterface $link) {
-
+    public function link($origin, LinkInterface $link)
+    {
         if (!isset($this->links[$origin])) {
             $this->links[$origin] = [$link];
         } else {
             $this->links[$origin][] = $link;
         }
-
     }
 
     /**
@@ -86,11 +84,13 @@ class Locator implements LocatorInterface {
      * found.
      *
      * @param string $path
+     *
      * @throws NotFoundException
+     *
      * @return ResourceInterface
      */
-    function get($path) {
-
+    public function get($path)
+    {
         if (isset($this->mounts[$path])) {
             // We have a mount on that path.
             if ($this->mounts[$path] instanceof ResourceInterface) {
@@ -99,6 +99,7 @@ class Locator implements LocatorInterface {
                 // The mount was specified as a callback, so we're running it
                 // now, and saving the result.
                 $this->mounts[$path] = $this->mounts[$path]();
+
                 return $this->mounts[$path];
             }
         }
@@ -109,37 +110,36 @@ class Locator implements LocatorInterface {
 
         if (!$parentName) {
             // We're at the root and can't go up further in the tree.
-            throw new NotFoundException('Resource "' . $path . '" not found');
+            throw new NotFoundException('Resource "'.$path.'" not found');
         }
 
         $parent = $this->get($parentName);
         if (is_null($parent)) {
             // The parent did not exist.
-            throw new NotFoundException('Resource "' . $path . '" not found');
+            throw new NotFoundException('Resource "'.$path.'" not found');
         }
         if (!$parent instanceof CollectionInterface) {
             // The parent was not a 'ParentResource'.
-            throw new NotFoundException('Resource "' . $path . '" not found');
+            throw new NotFoundException('Resource "'.$path.'" not found');
         }
         $result = $parent->getItem($baseName);
         if (is_null($result)) {
-            throw new NotFoundException('Resource "' . $path . '" not found');
+            throw new NotFoundException('Resource "'.$path.'" not found');
         } else {
             return $result;
         }
-
     }
 
     /**
      * Returns whether a resource on a specific path exists.
      *
      * @param string $path
+     *
      * @return void
      */
-    function exists($path) {
-
+    public function exists($path)
+    {
         return !is_null($this->get($path));
-
     }
 
     /**
@@ -154,10 +154,11 @@ class Locator implements LocatorInterface {
      * URIs may be absolute or relative.
      *
      * @param string $path
+     *
      * @return LinkInterface[]
      */
-    function getLinks($path) {
-
+    public function getLinks($path)
+    {
         $rLinks = [];
 
         if ($path) {
@@ -167,27 +168,23 @@ class Locator implements LocatorInterface {
 
         // Links coming from the node might be relative to the node, this
         // function makes them relative to the root of the locator.
-        foreach($this->get($path)->getLinks() as $link) {
-
+        foreach ($this->get($path)->getLinks() as $link) {
             $href = $link->getHref();
-            if(parse_url($href, PHP_URL_SCHEME)) {
+            if (parse_url($href, PHP_URL_SCHEME)) {
                 // Absolute
                 $rLinks[] = $link;
-            } elseif ($href === '/') {
+            } elseif ('/' === $href) {
                 // Relative to the root of the locator.
-                $rLinks[] = new Link(substr($href,1), $link->getRel(), $link->getAttributes());
+                $rLinks[] = new Link(substr($href, 1), $link->getRel(), $link->getAttributes());
             } else {
                 // Relative to the current node.
-                $rLinks[] = new Link($path . '/' . $href, $link->getRel(), $link->getAttributes());
+                $rLinks[] = new Link($path.'/'.$href, $link->getRel(), $link->getAttributes());
             }
-
         }
 
         return array_merge(
             $rLinks,
-            isset($this->links[$path])?$this->links[$path]:[]
+            isset($this->links[$path]) ? $this->links[$path] : []
         );
-
     }
-
 }

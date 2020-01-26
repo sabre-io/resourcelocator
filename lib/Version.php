@@ -9,11 +9,10 @@ namespace Sabre\ResourceLocator;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/
  */
-class Version {
-
+class Version
+{
     /**
-     * Full version number
+     * Full version number.
      */
     const VERSION = '0.0.2';
-
 }

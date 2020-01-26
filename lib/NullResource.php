@@ -11,12 +11,10 @@ namespace Sabre\ResourceLocator;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
-class NullResource implements ResourceInterface {
-
-    function getLinks() {
-
+class NullResource implements ResourceInterface
+{
+    public function getLinks()
+    {
         return [];
-
     }
-
 }
