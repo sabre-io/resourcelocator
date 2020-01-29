@@ -18,10 +18,10 @@ class LocatorTest extends TestCase {
 
     /**
      * @depends testConstruct
-     * @expectedException \Sabre\ResourceLocator\NotFoundException
      */
     function testGetNotFound() {
 
+        $this->expectException(NotFoundException::class);
         $locator = new Locator();
         $locator->get('foo');
 
@@ -75,10 +75,10 @@ class LocatorTest extends TestCase {
 
     /**
      * @depends testConstruct
-     * @expectedException InvalidArgumentException
      */
     function testMountInvalid() {
 
+        $this->expectException(\InvalidArgumentException::class);
         $locator = new Locator();
         $locator->mount('foo', 'blabla');
 
