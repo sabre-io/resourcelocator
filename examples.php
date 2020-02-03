@@ -7,11 +7,12 @@
  * We set up a simply hierarchy, and then with a few crappy templates, you're
  * able to traverse this tree.
  */
+
 namespace Sabre\ResourceLocator;
 
 include 'vendor/autoload.php';
 
-$path = isset($_GET['path'])?$_GET['path']:'';
+$path = isset($_GET['path']) ? $_GET['path'] : '';
 
 /**
  * This is the main locator. You could also call this a 'router' or 'tree'.
@@ -24,25 +25,24 @@ $locator = new Locator();
  *
  * In this case we're representing users on a system.
  */
-class Principals implements CollectionInterface {
-
+class Principals implements CollectionInterface
+{
     /**
      * A list of users... Normally this would come from a DB.
      */
-    public $items = ['admin','user1','user2','user3','user4','user5','user6','user7','user8','evert'];
+    public $items = ['admin', 'user1', 'user2', 'user3', 'user4', 'user5', 'user6', 'user7', 'user8', 'evert'];
 
     /**
      * The getChild method is responsible for returning a Resource class for a
      * child-node.
      */
-    function getItem($name) {
-
+    public function getItem($name)
+    {
         if (in_array($name, $this->items)) {
             // A NullResource is kind of like a dummy resource. It does
             // nothing.
             return new NullResource();
         }
-
     }
 
     /**
@@ -55,12 +55,10 @@ class Principals implements CollectionInterface {
      * response, or a <href> in a WebDAV Multistatus, or a link in a HAL json
      * document.
      */
-    function getLinks() {
-
+    public function getLinks()
+    {
         return ['item' => $this->items];
-
     }
-
 }
 
 // You can mount a new node *anywhere* in the tree, so not just on the root,
@@ -77,30 +75,28 @@ $locator->mount('principals/admin/yourock', new NullResource());
 // This demonstrates that we can wrap the resource in a callback, so that the
 // resource object is only created when absolutely needed, saving time and
 // memory.
-$locator->mount('principals/admin/isthisturnedon?', function() { return new NullResource(); });
+$locator->mount('principals/admin/isthisturnedon?', function () { return new NullResource(); });
 
 // This demonstrates that we can also add arbitrary links anywhere in tree.
 $locator->link('principals/evert', 'homepage', 'http://evertpot.com/');
 $locator->link('principals/evert', 'email', 'mailto:me@evertpot.com');
 
-
 $resource = $locator->get($path);
 
-if(!$resource) {
+if (!$resource) {
     die('Resource not found!');
 }
 
 $links = $locator->getLinks($path);
 
-function absolute($link) {
-
+function absolute($link)
+{
     if (!parse_url($link, PHP_URL_SCHEME)) {
         // Relative url.
-        return '?path=' . urlencode($link);
+        return '?path='.urlencode($link);
     } else {
         return $link;
     }
-
 }
 
 ?>
@@ -113,25 +109,21 @@ function absolute($link) {
 
 <em>A very poor system to inspect your resource hierarchy</em>
 
-<h1><?= $path?:'(root)' ?></h1>
+<h1><?= $path ?: '(root)'; ?></h1>
 
 <h2>Links</h2>
 <?php
 
-foreach($links as $rel=>$links) {
-
+foreach ($links as $rel => $links) {
     echo '<h3>', $rel, '</h3>';
 
     echo '<ul>';
 
-    foreach($links as $link) {
-
-        echo '<li><a href="', absolute($link), '">', ($link?:'(root)'), '</a></li>';
-
+    foreach ($links as $link) {
+        echo '<li><a href="', absolute($link), '">', ($link ?: '(root)'), '</a></li>';
     }
 
     echo '</ul>';
-
 } ?>
 
 </body>
