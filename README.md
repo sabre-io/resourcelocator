@@ -1,6 +1,8 @@
 sabre/resource-locator
 ======================
 
+Trigger CI
+
 This package implements a resource-locator pattern. It's a bit of a mix of a
 repository pattern and a router, and can be used as the foundation for a
 hypermedia application.
